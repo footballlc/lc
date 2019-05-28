@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--parameterType是参数类型 -->
+  <mapper namespace="com.sz.lc.dao.UserDao">
+   <select id="findByUserName" parameterType="String" resultType="User">
+   select * from user where username=#{username}
+   </select>
+ <update id="add" parameterType="User">
+   insert into user(id,username,password) values(null,#{username},#{password})
+ </update>  
+<!--涉及分页的功能，#{offset}和#{pageSize} -->
+   <select id="findList" parameterType="Map" resultType="User">
+   select * from user where username like #{username} limit #{offset},#{pageSize}
+   </select>
+<!--获取数量 -->
+   <select id="getTotal" parameterType="Map" resultType="Integer">
+   select count(id) from user where username like #{username} 
+   </select>
+  
+<!--   更新 -->
+  <update id="edit" parameterType="User">
+   update user set username=#{username},password=#{password} where id=#{id}
+ </update> 
+  
+    <update id="delete" parameterType="String">
+<!--这边已经有括号了，在controller那边无需加括号,$跟#都可以 -->
+      delete from user where id in (${value})
+ </update>
+  </mapper>

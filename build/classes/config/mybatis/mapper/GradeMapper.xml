@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--parameterType是参数类型 -->
+  <mapper namespace="com.sz.lc.dao.GradeDao">
+   <select id="findByUserName" parameterType="String" resultType="Grade">
+   select * from grade where name=#{name}
+   </select>
+      <select id="findAll" resultType="Grade">
+      select * from grade 
+   </select>
+ <update id="add" parameterType="Grade">
+   insert into grade(id,name,remark) values(null,#{name},#{remark})
+ </update>  
+<!--涉及分页的功能，#{offset}和#{pageSize} -->
+   <select id="findList" parameterType="Grade" resultType="Grade">
+   select * from grade where name like #{name} limit #{offset},#{pageSize}
+   </select>
+<!--获取数量 -->
+   <select id="getTotal" parameterType="Grade" resultType="Integer">
+   select count(id) from grade where name like #{name} 
+   </select>
+  
+<!--   更新 -->
+  <update id="edit" parameterType="Grade">
+   update grade set name=#{name},remark=#{remark} where id=#{id}
+ </update> 
+  
+    <update id="delete" parameterType="String">
+<!--这边已经有括号了，在controller那边无需加括号,$跟#都可以 -->
+      delete from grade where id in (${value})
+ </update>
+  </mapper>
